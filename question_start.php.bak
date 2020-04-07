@@ -1,0 +1,32 @@
+<?
+SESSION_START();
+include'config.php';
+$sbj_query=mysql_query("SELECT sbj_name,semester,q_count FROM Subject WHERE sbj_id=$_SESSION[sbj_id]");
+$sbj_row=mysql_fetch_array($sbj_query);
+$table=$sbj_row[0].$sbj_row[1];
+
+$tmp_q=mysql_query("SELECT* FROM $_SESSION[tmp]")or die("ERR ".mysql_error());
+$tmp_r=mysql_fetch_array($tmp_q);
+
+
+
+$q_id=$tmp_r[1];
+$tbl_query=mysql_query("SELECT* FROM $table WHERE q_id=$q_id");
+$tbl_row=mysql_fetch_array($tbl_query);
+echo $tbl_row[3];
+echo "<BR>";
+echo "1."." ".$tbl_row[4];
+echo "<BR>";
+echo "2."." ".$tbl_row[5];
+echo "<BR>";
+echo "3."." ".$tbl_row[6];
+echo "<BR>";
+echo "4."." ".$tbl_row[7];
+echo "<BR>";
+?>
+<FORM METHOD=POST ACTION="">
+<INPUT TYPE="submit" value="Next question">
+</FORM>
+<?
+
+?>

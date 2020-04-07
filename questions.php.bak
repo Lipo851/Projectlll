@@ -1,0 +1,74 @@
+<?
+SESSION_START();
+include'config.php';
+?>
+<CENTER><?echo $_SESSION['ns'];?></CENTER><BR>
+<?
+$tmp_query=mysql_query("SELECT st_code FROM Student WHERE st_id=$_SESSION[s_id]")or die("Errorish ".mysql_error());
+$row=mysql_fetch_array($tmp_query);
+$_SESSION['tmp']=$row[0];
+mysql_query("CREATE TABLE `$row[0]` (`tmp_id` INT NOT NULL AUTO_INCREMENT ,`tmp` INT NOT NULL ,PRIMARY KEY ( `tmp_id` ));")or die("ERROR".mysql_error());
+
+$_SESSION['start']=1;
+$sbj_query=mysql_query("SELECT sbj_name,semester,q_count FROM Subject WHERE sbj_id=$_SESSION[sbj_id]");
+$sbj_row=mysql_fetch_array($sbj_query);
+$table=$sbj_row[0].$sbj_row[1];
+
+$tbl_query=mysql_query("SELECT* FROM $table");
+$num=mysql_num_rows($tbl_query);
+
+
+
+/////////rand-ov 4 tvi @ntrum//////////////
+$kk=$sbj_row[2];
+
+if($kk<=$num)
+{
+	$mass[1]=0;
+
+	$count=1 ;
+	$mas[0]=rand(1,$num);
+	$fl=true;
+
+	while($count<$kk)
+	{
+		$fl=true;
+		$k=rand(1,$num);
+
+		for($i=0;$i<$count;$i++)
+		{
+			if($mas[$i] == $k)
+			{
+				$fl=false;
+				break;
+			}
+		}
+		if($fl==true)
+		{
+			$mas[$count] = $k;
+			$count++;
+		}
+	
+	}
+
+	for($i=0;$i<$count;$i++)
+	{	
+		?><FORM METHOD=POST ACTION="question_start.php"><?
+		
+		echo $mas[$i];
+		mysql_query("INSERT INTO `$row[0]` VALUES(NULL,'$mas[$i]')");
+		//echo $tbl_row[3];
+		echo '<br>';
+	}
+	
+	
+	?><CENTER><INPUT TYPE="submit" value="Start test"></CENTER>
+	</FORM><?
+	
+}else 
+	echo "Ararkai harcer@ aveli qich en qan tomsum teghadrveliq harceri qanak@ !!!";
+
+
+
+
+?>
